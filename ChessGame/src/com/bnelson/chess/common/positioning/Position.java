@@ -6,6 +6,11 @@ package com.bnelson.chess.common.positioning;
 public class Position {
     private final int x,y;
 
+    public Position(RelativePosition relativePosition, Position currentPosition){
+        this.x = currentPosition.getX() + relativePosition.getX();
+        this.y = currentPosition.getY() + relativePosition.getY();
+    }
+
     public Position(int x, int y) {
         this.x = x;
         this.y = y;

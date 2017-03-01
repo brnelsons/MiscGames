@@ -9,12 +9,13 @@ import javax.swing.*;
  */
 public class ChessGameMain {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException {
 
         ChessGameClient client = new ChessGameClient();
         client.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         client.setVisible(true);
         while(client.isVisible()){
+            Thread.sleep(1000/60);
             client.update();
         }
         System.exit(0);

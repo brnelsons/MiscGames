@@ -2,9 +2,10 @@ package com.bnelson.chess.common.board;
 
 import com.bnelson.chess.common.positioning.Position;
 import com.bnelson.chess.common.pieces.ChessPiece;
-import com.bnelson.chess.common.pieces.IsChessPiece;
+import com.bnelson.chess.common.pieces.interfaces.IsChessPiece;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,6 +61,13 @@ public class ChessBoard implements HasBoardTiles{
 
         public Builder addPiece(IsChessPiece chessPiece){
             board.put(chessPiece.getDefaultPosition(), chessPiece);
+            return this;
+        }
+
+        public Builder addAllPieces(List<IsChessPiece> chessPieces){
+            for(IsChessPiece chessPiece : chessPieces) {
+                board.put(chessPiece.getDefaultPosition(), chessPiece);
+            }
             return this;
         }
 
