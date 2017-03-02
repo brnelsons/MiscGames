@@ -100,7 +100,19 @@ public class ChessGameClient extends JFrame{
                 tileSize,
                 tileSize
         );
+        System.out.println("Creating chess piece button " + isChessPiece.getName() + " at " + position.getX() + ", " + position.getY());
         return pieceButton;
+    }
+
+    private JButton createMovementButton(Position position) {
+        JButton movement = new JButton("M");
+        movement.setBounds(
+                position.getX()* tileSize,
+                position.getY()* tileSize,
+                tileSize,
+                tileSize
+        );
+        return movement;
     }
 
     public void update(){
@@ -117,12 +129,13 @@ public class ChessGameClient extends JFrame{
     private void showPotentialMoves(IsChessPiece piece) {
         for (RelativePosition position : piece.getMovements()) {
             Position newPosition = new Position(position, piece.getPosition());
-
+            getContentPane().add(createMovementButton(newPosition));
         }
     }
 
     private void updateButtonPosition(IsChessPiece piece) {
         JButton pieceButton = buttonCache.get(piece);
+        pieceButton.setVisible(true);
         pieceButton.setBounds(
                 piece.getPosition().getX()* tileSize,
                 piece.getPosition().getY()* tileSize,

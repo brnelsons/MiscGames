@@ -14,9 +14,15 @@ public abstract class ChessPiece implements IsChessPiece {
     private boolean isSelected;
     private Position position;
 
-    public ChessPiece(String name, IsTeam isTeam){
+    private final Position defaultPosition;
+
+    public ChessPiece(String name,
+                      IsTeam isTeam,
+                      Position defaultPosition){
         this.name = name;
         this.isTeam = isTeam;
+        this.defaultPosition = isTeam.isInverse() ? defaultPosition.getInverse(7) : defaultPosition;
+        this.position = this.defaultPosition;
     }
 
     @Override
@@ -47,5 +53,15 @@ public abstract class ChessPiece implements IsChessPiece {
     @Override
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    @Override
+    public Position getDefaultPosition() {
+        return defaultPosition;
+    }
+
+    @Override
+    public boolean isInverse() {
+        return getTeam().isInverse();
     }
 }

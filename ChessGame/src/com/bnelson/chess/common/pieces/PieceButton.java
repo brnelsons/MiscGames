@@ -21,7 +21,6 @@ public class PieceButton extends JButton implements HasChessPiece {
         final Color defaultColor = null;
         final Color focusedColor = new Color(0, 255, 0, 50);
         setBackground(defaultColor);
-
         addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {

@@ -5,7 +5,7 @@ import com.bnelson.chess.common.pieces.ChessPiece;
 import com.bnelson.chess.common.positioning.Position;
 import com.bnelson.chess.common.positioning.RelativePosition;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,20 +15,10 @@ import java.util.List;
 public class PawnPiece extends ChessPiece {
 
     private final ImageIcon icon;
-    private final int x;
-
-    private Position position;
 
     public PawnPiece(int x, IsTeam isTeam) {
-        super("Pawn", isTeam);
-        this.x = x;
+        super("Pawn", isTeam, new Position(x,1));
         this.icon = new ImageIcon(getClass().getResource("../../resources/king_blk.png"));
-        this.position = getDefaultPosition();
-    }
-
-    @Override
-    public Position getDefaultPosition() {
-        return new Position(x,1);
     }
 
     @Override
@@ -42,15 +32,5 @@ public class PawnPiece extends ChessPiece {
     @Override
     public ImageIcon getImageIcon() {
         return icon;
-    }
-
-    @Override
-    public Position getPosition() {
-        return position;
-    }
-
-    @Override
-    public void setPosition(Position position) {
-        this.position = position;
     }
 }

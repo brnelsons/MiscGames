@@ -17,18 +17,12 @@ public class KingPiece extends ChessPiece {
     private final ImageIcon icon;
     private final List<RelativePosition> movements;
 
-    private Position position;
+    private static final Position DEFAULT_POS = new Position(4,0);
 
     public KingPiece(IsTeam isTeam) {
-        super("King", isTeam);
+        super("King", isTeam, DEFAULT_POS);
         icon = new ImageIcon(getClass().getResource("../../resources/king_blk.png"));
-        position = getDefaultPosition();
         movements = new ArrayList<>();
-    }
-
-    @Override
-    public Position getDefaultPosition() {
-        return new Position(4,0);
     }
 
     @Override
@@ -39,15 +33,5 @@ public class KingPiece extends ChessPiece {
     @Override
     public ImageIcon getImageIcon() {
         return icon;
-    }
-
-    @Override
-    public Position getPosition() {
-        return position;
-    }
-
-    @Override
-    public void setPosition(Position position) {
-        this.position = position;
     }
 }
