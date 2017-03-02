@@ -1,5 +1,6 @@
 package com.bnelson.chess.common.pieces.chess;
 
+import com.bnelson.chess.common.IsTeam;
 import com.bnelson.chess.common.pieces.ChessPiece;
 import com.bnelson.chess.common.positioning.Position;
 import com.bnelson.chess.common.positioning.RelativePosition;
@@ -18,8 +19,8 @@ public class PawnPiece extends ChessPiece {
 
     private Position position;
 
-    public PawnPiece(int x) {
-        super("Queen");
+    public PawnPiece(int x, IsTeam isTeam) {
+        super("Pawn", isTeam);
         this.x = x;
         this.icon = new ImageIcon(getClass().getResource("../../resources/king_blk.png"));
         this.position = getDefaultPosition();

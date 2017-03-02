@@ -1,5 +1,6 @@
 package com.bnelson.chess.common.pieces;
 
+import com.bnelson.chess.common.IsTeam;
 import com.bnelson.chess.common.pieces.chess.KingPiece;
 import com.bnelson.chess.common.pieces.chess.PawnPiece;
 import com.bnelson.chess.common.pieces.chess.QueenPiece;
@@ -13,12 +14,12 @@ import java.util.List;
  */
 public class ChessPieces {
 
-    public static List<IsChessPiece> getAll(){
+    public static List<IsChessPiece> getAll(IsTeam isTeam){
         ArrayList<IsChessPiece> pieces = new ArrayList<>();
-        pieces.add(new KingPiece());
-        pieces.add(new QueenPiece());
+        pieces.add(new KingPiece(isTeam));
+        pieces.add(new QueenPiece(isTeam));
         for(int i = 0;i<8;i++){
-            pieces.add(new PawnPiece(i));
+            pieces.add(new PawnPiece(i, isTeam));
         }
         return pieces;
     }

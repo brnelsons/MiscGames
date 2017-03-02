@@ -23,4 +23,8 @@ public class Position {
     public int getY() {
         return y;
     }
+
+    public Position getInverse(int n){
+        return new Position(n-x, n-y);
+    }
 }

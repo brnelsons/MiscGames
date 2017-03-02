@@ -2,7 +2,6 @@ package com.bnelson.chess.common.pieces;
 
 import com.bnelson.chess.common.pieces.interfaces.HasChessPiece;
 import com.bnelson.chess.common.pieces.interfaces.IsChessPiece;
-import com.bnelson.chess.common.positioning.Position;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,17 +14,14 @@ import java.awt.event.FocusListener;
 public class PieceButton extends JButton implements HasChessPiece {
 
     private IsChessPiece chessPiece;
-    private int height, width, tileSize;
 
-    public PieceButton(IsChessPiece chessPiece, Icon icon, int height, int width, int tileSize) {
+    public PieceButton(IsChessPiece chessPiece, Icon icon) {
         super(icon);
         this.chessPiece = chessPiece;
-        this.height = height;
-        this.width = width;
-        this.tileSize = tileSize;
-        final Color defaultColor = new Color(50, 50, 50, 100);
+        final Color defaultColor = null;
         final Color focusedColor = new Color(0, 255, 0, 50);
         setBackground(defaultColor);
+
         addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {

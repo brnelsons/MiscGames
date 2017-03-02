@@ -1,6 +1,8 @@
 package com.bnelson.chess.common.pieces;
 
+import com.bnelson.chess.common.IsTeam;
 import com.bnelson.chess.common.pieces.interfaces.IsChessPiece;
+import com.bnelson.chess.common.positioning.Position;
 
 /**
  * Created by brnel on 2/28/2017.
@@ -8,10 +10,13 @@ import com.bnelson.chess.common.pieces.interfaces.IsChessPiece;
 public abstract class ChessPiece implements IsChessPiece {
 
     private String name;
+    private IsTeam isTeam;
     private boolean isSelected;
+    private Position position;
 
-    public ChessPiece(String name){
+    public ChessPiece(String name, IsTeam isTeam){
         this.name = name;
+        this.isTeam = isTeam;
     }
 
     @Override
@@ -30,17 +35,17 @@ public abstract class ChessPiece implements IsChessPiece {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ChessPiece that = (ChessPiece) o;
-
-        return name != null ? name.equals(that.name) : that.name == null;
+    public IsTeam getTeam() {
+        return isTeam;
     }
 
     @Override
-    public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+    public Position getPosition() {
+        return position;
+    }
+
+    @Override
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

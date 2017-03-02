@@ -60,13 +60,13 @@ public class ChessBoard implements HasBoardTiles{
         }
 
         public Builder addPiece(IsChessPiece chessPiece){
-            board.put(chessPiece.getDefaultPosition(), chessPiece);
+            board.put(chessPiece.getPosition(), chessPiece);
             return this;
         }
 
         public Builder addAllPieces(List<IsChessPiece> chessPieces){
             for(IsChessPiece chessPiece : chessPieces) {
-                board.put(chessPiece.getDefaultPosition(), chessPiece);
+                board.put(chessPiece.getPosition(), chessPiece);
             }
             return this;
         }
