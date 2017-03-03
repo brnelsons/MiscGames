@@ -7,7 +7,5 @@ import java.util.List;
  */
 public interface HasMovements{
     List<RelativePosition> getMovements();
-    boolean hasMoved();
-    void setHasMoved(boolean hasMoved);
     void move(Position position);
 }

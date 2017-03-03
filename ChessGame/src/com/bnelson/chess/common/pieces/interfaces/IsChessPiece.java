@@ -1,6 +1,5 @@
 package com.bnelson.chess.common.pieces.interfaces;
 
-import com.bnelson.chess.common.HasInverse;
 import com.bnelson.chess.common.HasTeam;
 import com.bnelson.chess.common.positioning.HasDefaultPosition;
 import com.bnelson.chess.common.positioning.HasDirection;
@@ -18,6 +17,5 @@ public interface IsChessPiece extends
         HasName,
         HasTeam,
         IsSelectable,
-        HasInverse,
         HasDirection{
 }

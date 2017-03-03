@@ -1,14 +1,20 @@
 package com.bnelson.chess.common.pieces;
 
 import com.bnelson.chess.common.IsTeam;
+import com.bnelson.chess.common.board.ChessBoard;
 import com.bnelson.chess.common.pieces.interfaces.IsChessPiece;
 import com.bnelson.chess.common.positioning.Direction;
 import com.bnelson.chess.common.positioning.Position;
 
+import javax.swing.JButton;
+import java.awt.Color;
+
 /**
  * Created by brnel on 2/28/2017.
  */
-public abstract class ChessPiece implements IsChessPiece {
+public abstract class ChessPiece extends JButton implements IsChessPiece {
+
+    private static final Color FOCUS_COLOR = new Color(0, 255, 0, 50);
 
     private String name;
     private IsTeam isTeam;
@@ -20,15 +26,45 @@ public abstract class ChessPiece implements IsChessPiece {
     public ChessPiece(String name,
                       IsTeam isTeam,
                       Position defaultPosition){
+        super();
         this.name = name;
         this.isTeam = isTeam;
         this.defaultPosition = isTeam.getDirection() == Direction.UP ? defaultPosition.getInverse(7) : defaultPosition;
         this.position = this.defaultPosition;
+
+        setVisible(true);
+        setBackground(null);
+        setBounds(this.position.getX(), this.position.getY());
+
+        addActionListener(e -> {
+            if (isSelected()) {
+                //unselect it
+                setBackground(null);
+                setIsSelected(false);
+            } else {
+                setBackground(FOCUS_COLOR);
+                setIsSelected(true);
+            }
+        });
+    }
+
+    private void setBounds(int x, int y) {
+        setBounds(
+                x * ChessBoard.TILE_SIZE,
+                y * ChessBoard.TILE_SIZE,
+                ChessBoard.TILE_SIZE,
+                ChessBoard.TILE_SIZE
+        );
     }
 
     @Override
     public boolean isSelected() {
         return isSelected;
+    }
+
+    @Override
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 
     @Override
@@ -57,11 +93,6 @@ public abstract class ChessPiece implements IsChessPiece {
     }
 
     @Override
-    public boolean isInverse() {
-        return getTeam().isInverse();
-    }
-
-    @Override
     public Direction getDirection() {
         return getTeam().getDirection();
     }
@@ -69,21 +100,8 @@ public abstract class ChessPiece implements IsChessPiece {
     @Override
     public void move(Position position) {
         this.position = position;
-    }
-
-    @Override
-    public boolean hasMoved() {
-        return hasMoved;
-    }
-
-    @Override
-    public void setHasMoved(boolean hasMoved) {
-        this.hasMoved = hasMoved;
-    }
-
-    @Override
-    public void setIsSelected(boolean isSelected) {
-        this.isSelected = isSelected;
+        //update bounds
+        setBounds(position.getX(), position.getY());
     }
 
     @Override

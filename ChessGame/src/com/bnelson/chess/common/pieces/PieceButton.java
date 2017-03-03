@@ -16,8 +16,8 @@ public class PieceButton extends JButton implements HasChessPiece {
 
     private IsChessPiece chessPiece;
 
-    public PieceButton(IsChessPiece chessPiece, Icon icon, int size) {
-        super(icon);
+    public PieceButton(IsChessPiece chessPiece, int size) {
+        super();
         this.chessPiece = chessPiece;
         final Color focusedColor = new Color(0, 255, 0, 50);
         setVisible(true);

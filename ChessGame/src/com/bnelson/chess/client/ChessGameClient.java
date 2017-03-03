@@ -3,8 +3,8 @@ package com.bnelson.chess.client;
 import com.bnelson.chess.common.ChessPlayer;
 import com.bnelson.chess.common.IsTeam;
 import com.bnelson.chess.common.board.ChessBoard;
+import com.bnelson.chess.common.pieces.ChessPiece;
 import com.bnelson.chess.common.pieces.ChessPieces;
-import com.bnelson.chess.common.pieces.PieceButton;
 import com.bnelson.chess.common.pieces.interfaces.IsChessPiece;
 import com.bnelson.chess.common.positioning.Direction;
 import com.bnelson.chess.common.positioning.HasMovements;
@@ -19,11 +19,8 @@ import javax.swing.JFrame;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
-import java.awt.Image;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by brnel on 2/28/2017.
@@ -33,8 +30,6 @@ import java.util.Map;
 public class ChessGameClient extends JFrame{
 
     private ChessBoard chessBoard;
-    private Map<IsChessPiece, Icon> iconCache;
-    private Map<IsChessPiece, PieceButton> buttonCache;
     private List<JButton> movementCache;
     private int tileSize;
     private List<ChessPlayer> players;
@@ -42,22 +37,15 @@ public class ChessGameClient extends JFrame{
     private Container contentPane;
 
     enum Teams implements IsTeam{
-        BLACK("Black", false, Direction.UP),
-        WHITE("White", true, Direction.DOWN);
+        BLACK("Black", Direction.UP),
+        WHITE("White", Direction.DOWN);
 
         private final String name;
-        private final boolean isInverse;
         private final Direction direction;
 
-        Teams(String name, boolean isInverse, Direction direction) {
+        Teams(String name, Direction direction) {
             this.name = name;
-            this.isInverse = isInverse;
             this.direction = direction;
-        }
-
-        @Override
-        public boolean isInverse() {
-            return isInverse;
         }
 
         @Override
@@ -84,36 +72,26 @@ public class ChessGameClient extends JFrame{
     }
 
     private void start(List<ChessPlayer> players){
-        ChessBoard.Builder builder = ChessBoard.newBuilder();
-        for(ChessPlayer player : players){
-            builder.addAllPieces(player);
-        }
-        this.chessBoard = builder.build();
+        this.chessBoard = ChessBoard.newBuilder()
+                .addAllPieces(players)
+                .build();
         setupImageCache();
     }
 
     private void setupImageCache() {
-        iconCache = new HashMap<>();
-        buttonCache = new HashMap<>();
         movementCache = new ArrayList<>();
         contentPane = getContentPane();
         tileSize = chessBoard.getTileSize();
         int imageSize = chessBoard.getTileSize()-20;
-        for (IsChessPiece isChessPiece : chessBoard.getGameBoard().values()) {
-            Image scaledImage = Util.getScaledImage(isChessPiece.getImageIcon(), imageSize, imageSize);
-            iconCache.put(isChessPiece, new ImageIcon(scaledImage));
-            PieceButton pieceButton = new PieceButton(
-                    isChessPiece,
-                    iconCache.get(isChessPiece),
-                    tileSize);
-            buttonCache.put(isChessPiece, pieceButton);
-            contentPane.add(pieceButton);
+        for (ChessPiece chessPiece : chessBoard.getGameBoard().values()) {
+            Icon scaledImage =new ImageIcon(Util.getScaledImage(chessPiece.getImageIcon(), imageSize, imageSize));
+            chessPiece.setIcon(scaledImage);
+            contentPane.add(chessPiece, 0);
         }
     }
 
     public void update(){
         for (IsChessPiece chessPiece : chessBoard.getGameBoard().values()) {
-            updateButtonPosition(chessPiece);
             if(chessPiece.isSelected()){
                 if(selectedPiece != null){
                     selectedPiece.setIsSelected(false);
@@ -126,7 +104,7 @@ public class ChessGameClient extends JFrame{
                 clearMovements();
                 for (JButton jButton : getPotentialMoves(selectedPiece)) {
                     movementCache.add(jButton);
-                    contentPane.add(jButton);
+                    contentPane.add(jButton, 1);
                 }
             }
         }
@@ -159,7 +137,6 @@ public class ChessGameClient extends JFrame{
         );
         movement.addActionListener(e -> {
             hasMovements.move(absolutePosition);
-            hasMovements.setHasMoved(true);
             clearMovements();
         });
         return movement;
@@ -170,19 +147,5 @@ public class ChessGameClient extends JFrame{
             contentPane.remove(btn);
         }
         movementCache.clear();
-    }
-
-    private void updateButtonPosition(IsChessPiece piece) {
-        if(piece.hasMoved()) {
-            JButton pieceButton = buttonCache.get(piece);
-            pieceButton.setVisible(true);
-            pieceButton.setBounds(
-                    piece.getPosition().getX() * tileSize,
-                    piece.getPosition().getY() * tileSize,
-                    tileSize,
-                    tileSize
-            );
-            piece.setHasMoved(false);
-        }
     }
 }

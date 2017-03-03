@@ -6,5 +6,5 @@ import com.bnelson.chess.common.positioning.HasDirection;
 /**
  * Created by brnel on 3/1/2017.
  */
-public interface IsTeam extends HasInverse, HasName, HasDirection{
+public interface IsTeam extends HasName, HasDirection{
 }

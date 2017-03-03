@@ -1,9 +1,9 @@
 package com.bnelson.chess.common.board;
 
-import com.bnelson.chess.common.pieces.HasPieces;
+import com.bnelson.chess.common.pieces.HasChessPieces;
+import com.bnelson.chess.common.pieces.interfaces.HasChessPiece;
 import com.bnelson.chess.common.positioning.Position;
 import com.bnelson.chess.common.pieces.ChessPiece;
-import com.bnelson.chess.common.pieces.interfaces.IsChessPiece;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,17 +14,17 @@ import java.util.Map;
  */
 public class ChessBoard implements HasBoardTiles{
 
-    private static final int TILE_SIZE = 50;
-    private static final int TILE_COUNT_X = 8;
-    private static final int TILE_COUNT_Y = 8;
+    public static final int TILE_SIZE = 50;
+    public static final int TILE_COUNT_X = 8;
+    public static final int TILE_COUNT_Y = 8;
 
-    private Map<Position, IsChessPiece> gameBoard;
+    private Map<Position, ChessPiece> gameBoard;
 
-    private ChessBoard(Map<Position, IsChessPiece> gameBoard){
+    private ChessBoard(Map<Position, ChessPiece> gameBoard){
         this.gameBoard = gameBoard;
     }
 
-    public Map<Position, IsChessPiece> getGameBoard() {
+    public Map<Position, ChessPiece> getGameBoard() {
         return gameBoard;
     }
 
@@ -49,24 +49,21 @@ public class ChessBoard implements HasBoardTiles{
 
     public static class Builder{
 
-        private Map<Position, IsChessPiece> board;
+        private Map<Position, ChessPiece> board;
 
         private Builder(){
             board = new HashMap<>();
         }
 
-        public Builder addPiece(Position position, ChessPiece chessPiece){
-            board.put(position, chessPiece);
+        public <T extends HasChessPieces> Builder addAllPieces(List<T> hasChessPieces){
+            for(T hasChessPiece : hasChessPieces){
+                addAllPieces(hasChessPiece);
+            }
             return this;
         }
 
-        public Builder addPiece(IsChessPiece chessPiece){
-            board.put(chessPiece.getPosition(), chessPiece);
-            return this;
-        }
-
-        public Builder addAllPieces(HasPieces hasPieces){
-            for(IsChessPiece chessPiece : hasPieces.getPieces()) {
+        public Builder addAllPieces(HasChessPieces hasChessPieces){
+            for(ChessPiece chessPiece : hasChessPieces.getPieces()) {
                 board.put(chessPiece.getPosition(), chessPiece);
             }
             return this;
