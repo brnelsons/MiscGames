@@ -1,5 +1,6 @@
 package com.bnelson.chess.common.board;
 
+import com.bnelson.chess.common.pieces.HasPieces;
 import com.bnelson.chess.common.positioning.Position;
 import com.bnelson.chess.common.pieces.ChessPiece;
 import com.bnelson.chess.common.pieces.interfaces.IsChessPiece;
@@ -64,8 +65,8 @@ public class ChessBoard implements HasBoardTiles{
             return this;
         }
 
-        public Builder addAllPieces(List<IsChessPiece> chessPieces){
-            for(IsChessPiece chessPiece : chessPieces) {
+        public Builder addAllPieces(HasPieces hasPieces){
+            for(IsChessPiece chessPiece : hasPieces.getPieces()) {
                 board.put(chessPiece.getPosition(), chessPiece);
             }
             return this;

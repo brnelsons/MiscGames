@@ -4,6 +4,7 @@ import com.bnelson.chess.common.IsTeam;
 import com.bnelson.chess.common.pieces.ChessPiece;
 import com.bnelson.chess.common.positioning.Position;
 import com.bnelson.chess.common.positioning.RelativePosition;
+import com.bnelson.chess.common.utils.Util;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class QueenPiece extends ChessPiece {
 
     public QueenPiece(IsTeam isTeam) {
         super("Queen", isTeam, new Position(3,0));
-        icon = new ImageIcon(getClass().getResource("../../resources/king_blk.png"));
+        icon = Util.getResourceImage(getClass(), Util.ImageResource.KING_BLACK);
         movements = new ArrayList<>();
         movements.add(new RelativePosition(-1, 0));
     }
