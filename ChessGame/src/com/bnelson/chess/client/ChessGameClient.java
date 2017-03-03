@@ -1,6 +1,5 @@
 package com.bnelson.chess.client;
 
-import com.bnelson.chess.common.CanMove;
 import com.bnelson.chess.common.ChessPlayer;
 import com.bnelson.chess.common.IsTeam;
 import com.bnelson.chess.common.board.ChessBoard;
@@ -8,6 +7,7 @@ import com.bnelson.chess.common.pieces.ChessPieces;
 import com.bnelson.chess.common.pieces.PieceButton;
 import com.bnelson.chess.common.pieces.interfaces.IsChessPiece;
 import com.bnelson.chess.common.positioning.Direction;
+import com.bnelson.chess.common.positioning.HasMovements;
 import com.bnelson.chess.common.positioning.Position;
 import com.bnelson.chess.common.positioning.RelativePosition;
 import com.bnelson.chess.common.utils.Util;
@@ -102,27 +102,32 @@ public class ChessGameClient extends JFrame{
         for (IsChessPiece isChessPiece : chessBoard.getGameBoard().values()) {
             Image scaledImage = Util.getScaledImage(isChessPiece.getImageIcon(), imageSize, imageSize);
             iconCache.put(isChessPiece, new ImageIcon(scaledImage));
-            PieceButton pieceButton = new PieceButton(isChessPiece, iconCache.get(isChessPiece), tileSize);
+            PieceButton pieceButton = new PieceButton(
+                    isChessPiece,
+                    iconCache.get(isChessPiece),
+                    tileSize);
             buttonCache.put(isChessPiece, pieceButton);
             contentPane.add(pieceButton);
         }
     }
 
     public void update(){
-        for (Map.Entry<Position, IsChessPiece> chessPieceEntry : chessBoard.getGameBoard().entrySet()) {
-            IsChessPiece piece = chessPieceEntry.getValue();
-            updateButtonPosition(piece);
-            if(piece.isSelected()&& !piece.equals(selectedPiece)){
-                for (JButton btn : movementCache) {
-                    contentPane.remove(btn);
+        for (IsChessPiece chessPiece : chessBoard.getGameBoard().values()) {
+            updateButtonPosition(chessPiece);
+            if(chessPiece.isSelected()){
+                if(selectedPiece != null){
+                    selectedPiece.setIsSelected(false);
                 }
-                movementCache.clear();
-                selectedPiece = piece;
-                for (JButton jButton : getPotentialMoves(piece)) {
+                selectedPiece = chessPiece;
+            }
+
+            //show selected movement options;
+            if(selectedPiece != null && selectedPiece.isSelected()){
+                clearMovements();
+                for (JButton jButton : getPotentialMoves(selectedPiece)) {
                     movementCache.add(jButton);
                     contentPane.add(jButton);
                 }
-
             }
         }
         redraw();
@@ -143,7 +148,7 @@ public class ChessGameClient extends JFrame{
     }
 
     private JButton newButton(final Position absolutePosition,
-                              final CanMove canMove) {
+                              final HasMovements hasMovements) {
         JButton movement = new JButton("M");
         movement.setVisible(true);
         movement.setBounds(
@@ -152,18 +157,32 @@ public class ChessGameClient extends JFrame{
                 tileSize,
                 tileSize
         );
-        movement.addActionListener(e -> canMove.move(absolutePosition));
+        movement.addActionListener(e -> {
+            hasMovements.move(absolutePosition);
+            hasMovements.setHasMoved(true);
+            clearMovements();
+        });
         return movement;
     }
 
+    private void clearMovements() {
+        for (JButton btn : movementCache) {
+            contentPane.remove(btn);
+        }
+        movementCache.clear();
+    }
+
     private void updateButtonPosition(IsChessPiece piece) {
-        JButton pieceButton = buttonCache.get(piece);
-        pieceButton.setVisible(true);
-        pieceButton.setBounds(
-                piece.getPosition().getX()* tileSize,
-                piece.getPosition().getY()* tileSize,
-                tileSize,
-                tileSize
-        );
+        if(piece.hasMoved()) {
+            JButton pieceButton = buttonCache.get(piece);
+            pieceButton.setVisible(true);
+            pieceButton.setBounds(
+                    piece.getPosition().getX() * tileSize,
+                    piece.getPosition().getY() * tileSize,
+                    tileSize,
+                    tileSize
+            );
+            piece.setHasMoved(false);
+        }
     }
 }

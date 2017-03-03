@@ -6,8 +6,8 @@ import com.bnelson.chess.common.positioning.Position;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by brnel on 2/28/2017.
@@ -19,21 +19,20 @@ public class PieceButton extends JButton implements HasChessPiece {
     public PieceButton(IsChessPiece chessPiece, Icon icon, int size) {
         super(icon);
         this.chessPiece = chessPiece;
-        final Color defaultColor = null;
         final Color focusedColor = new Color(0, 255, 0, 50);
         setVisible(true);
-        setBackground(defaultColor);
-        addFocusListener(new FocusListener() {
+        setBackground(null);
+        addActionListener(new ActionListener() {
             @Override
-            public void focusGained(FocusEvent e) {
-                setBackground(focusedColor);
-                chessPiece.setIsSelected(true);
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                setBackground(defaultColor);
-                chessPiece.setIsSelected(false);
+            public void actionPerformed(ActionEvent e) {
+                if (chessPiece.isSelected()) {
+                    //unselect it
+                    setBackground(null);
+                    chessPiece.setIsSelected(false);
+                } else {
+                    setBackground(focusedColor);
+                    chessPiece.setIsSelected(true);
+                }
             }
         });
         Position position = chessPiece.getPosition();

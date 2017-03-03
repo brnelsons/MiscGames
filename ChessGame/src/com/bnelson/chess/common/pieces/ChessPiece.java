@@ -14,7 +14,7 @@ public abstract class ChessPiece implements IsChessPiece {
     private IsTeam isTeam;
     private boolean isSelected;
     private Position position;
-
+    private boolean hasMoved;
     private final Position defaultPosition;
 
     public ChessPiece(String name,
@@ -29,11 +29,6 @@ public abstract class ChessPiece implements IsChessPiece {
     @Override
     public boolean isSelected() {
         return isSelected;
-    }
-
-    @Override
-    public void setIsSelected(boolean isSelected) {
-        this.isSelected = isSelected;
     }
 
     @Override
@@ -74,6 +69,21 @@ public abstract class ChessPiece implements IsChessPiece {
     @Override
     public void move(Position position) {
         this.position = position;
+    }
+
+    @Override
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    @Override
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
+
+    @Override
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 
     @Override
