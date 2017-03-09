@@ -1,10 +1,11 @@
 package com.bnelson.miscgames.chess.common.pieces.chess;
 
-import com.bnelson.miscgames.common.teams.IsTeam;
 import com.bnelson.miscgames.chess.common.pieces.ChessPiece;
+import com.bnelson.miscgames.chess.common.utils.Util;
 import com.bnelson.miscgames.common.positioning.Position;
 import com.bnelson.miscgames.common.positioning.RelativePosition;
-import com.bnelson.miscgames.chess.common.utils.Util;
+import com.bnelson.miscgames.common.positioning.Side;
+import com.bnelson.miscgames.common.teams.IsTeam;
 
 import javax.swing.ImageIcon;
 import java.util.ArrayList;
@@ -13,19 +14,19 @@ import java.util.List;
 /**
  * Created by brnel on 2/28/2017.
  */
-public class PawnPiece extends ChessPiece {
+public class RookPiece extends ChessPiece {
 
     private final ImageIcon icon;
+    private final Side side;
     private final List<RelativePosition> movements;
-    private final int x;
 
-    public PawnPiece(int x, IsTeam isTeam) {
-        super("Pawn", isTeam, new Position(x,1));
-        this.icon = Util.getResourceImage(getClass(), Util.ImageResource.PAWN_BLACK);
-        this.x = x;
+    public RookPiece(IsTeam isTeam, Side side, ImageIcon icon) {
+        super("Rook", isTeam, side.equals(Side.RIGHT) ? new Position(0,0) : new Position(7,0));
+        this.icon = icon;
+        this.side = side;
         movements = new ArrayList<>();
-        movements.add(new RelativePosition(0, 1));
-        movements.add(new RelativePosition(0, 2));
+        movements.addAll(Util.getRepeatedHorizontalMoves(8));
+        movements.addAll(Util.getRepeatedVerticalMoves(8));
     }
 
     @Override
@@ -44,15 +45,17 @@ public class PawnPiece extends ChessPiece {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        PawnPiece pawnPiece = (PawnPiece) o;
+        RookPiece rookPiece = (RookPiece) o;
 
-        return x == pawnPiece.x;
+        if (icon != null ? !icon.equals(rookPiece.icon) : rookPiece.icon != null) return false;
+        return side == rookPiece.side;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + x;
+        result = 31 * result + (icon != null ? icon.hashCode() : 0);
+        result = 31 * result + (side != null ? side.hashCode() : 0);
         return result;
     }
 }

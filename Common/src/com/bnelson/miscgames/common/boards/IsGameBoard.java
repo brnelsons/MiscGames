@@ -6,6 +6,7 @@ package com.bnelson.miscgames.common.boards;
 public interface IsGameBoard {
     void init();
     void start();
+    boolean isOver();
     void save();
     void stop();
 }

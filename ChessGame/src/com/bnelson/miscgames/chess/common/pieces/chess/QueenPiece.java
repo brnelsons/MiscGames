@@ -20,9 +20,11 @@ public class QueenPiece extends ChessPiece {
 
     public QueenPiece(IsTeam isTeam) {
         super("Queen", isTeam, new Position(3,0));
-        icon = Util.getResourceImage(getClass(), Util.ImageResource.KING_BLACK);
+        icon = Util.getResourceImage(getClass(), Util.ImageResource.QUEEN_BLACK);
         movements = new ArrayList<>();
-        movements.add(new RelativePosition(-1, 0));
+        movements.addAll(Util.getRepeatedDiagonalMoves(7));
+        movements.addAll(Util.getRepeatedHorizontalMoves(7));
+        movements.addAll(Util.getRepeatedVerticalMoves(7));
     }
 
     @Override

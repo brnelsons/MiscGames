@@ -29,7 +29,6 @@ public class KingPiece extends ChessPiece {
                 if(x == 0 && y ==0)
                     continue;
                 movements.add(new RelativePosition(x, y));
-//                System.out.println("King movement = " + x + ", " + y);
             }
         }
     }

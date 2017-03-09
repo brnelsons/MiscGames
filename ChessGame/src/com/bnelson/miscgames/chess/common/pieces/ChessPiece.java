@@ -1,5 +1,7 @@
 package com.bnelson.miscgames.chess.common.pieces;
 
+import com.bnelson.miscgames.common.SimpleEvent;
+import com.bnelson.miscgames.common.SimpleEventHandler;
 import com.bnelson.miscgames.common.teams.IsTeam;
 import com.bnelson.miscgames.chess.common.board.ChessBoard;
 import com.bnelson.miscgames.chess.common.pieces.interfaces.IsChessPiece;
@@ -20,8 +22,8 @@ public abstract class ChessPiece extends JButton implements IsChessPiece {
     private IsTeam isTeam;
     private boolean isSelected;
     private Position position;
-    private boolean hasMoved;
     private final Position defaultPosition;
+    private SimpleEventHandler<ChessPiece> onSelectedEvent;
 
     public ChessPiece(String name,
                       IsTeam isTeam,
@@ -39,10 +41,8 @@ public abstract class ChessPiece extends JButton implements IsChessPiece {
         addActionListener(e -> {
             if (isSelected()) {
                 //unselect it
-                setBackground(null);
                 setIsSelected(false);
             } else {
-                setBackground(FOCUS_COLOR);
                 setIsSelected(true);
             }
         });
@@ -65,6 +65,13 @@ public abstract class ChessPiece extends JButton implements IsChessPiece {
     @Override
     public void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
+        if(isSelected){
+            setBackground(FOCUS_COLOR);
+            //show moves here?
+        }else{
+            setBackground(null);
+            //hide moves here?
+        }
     }
 
     @Override
